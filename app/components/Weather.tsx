@@ -1,10 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 
-export default function Weather({ defaultCity = "" }: { defaultCity?: string }) {
+export default function Weather({ defaultCity = "Lagos" }: { defaultCity?: string }) {
   const [weather, setWeather] = useState<string>("Loading weather...");
   const [city, setCity] = useState<string>(defaultCity);
   const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_KEY;
+
+  console.log("API Key:", apiKey); // 🔍 Check if it's loading
 
   useEffect(() => {
     if (!apiKey || !city) {
@@ -21,7 +23,7 @@ export default function Weather({ defaultCity = "" }: { defaultCity?: string }) 
         if (data?.main) {
           setWeather(`${data.name}: ${Math.round(data.main.temp)}°C, ${data.weather[0].description}`);
         } else {
-          setWeather("Weather data not available.");
+          setWeather(`Weather data not available for "${city}".`);
         }
       })
       .catch(() => setWeather("Failed to load weather."));
